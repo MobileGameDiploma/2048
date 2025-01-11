@@ -1,5 +1,6 @@
 using System;
 using System.Drawing;
+using System.Linq.Expressions;
 using Unity.VisualScripting;
 using UnityEngine;
 using Random = System.Random;
@@ -27,6 +28,41 @@ public class TileGrid : MonoBehaviour
                 Rows[y].Cells[x].Coordinates = new Vector2Int(x, y);
             }
         }
+    }
+
+    public TileCell GetCell(int x, int y)
+    {
+        if(x>=0 && x<Width && y>=0 && y<Height)
+            return Rows[y].Cells[x];
+        else 
+            return null;
+    }
+    public TileCell GetCell(Vector2Int coordinates)
+    {
+        return GetCell(coordinates.x, coordinates.y);
+    }
+    
+    public TileCell GetAdjacentCell(TileCell cell, Direction direction)
+    {
+        Vector2Int coordinates = cell.Coordinates;
+
+        switch (direction)
+        {
+            case Direction.Up:
+                coordinates.y--;
+                break;
+            case Direction.Down:
+                coordinates.y++;
+                break;
+            case Direction.Left:
+                coordinates.x--;
+                break;
+            case Direction.Right:
+                coordinates.x++;
+                break;
+        }
+
+        return GetCell(coordinates);
     }
 
     public TileCell GetRandomEmptyCell()
