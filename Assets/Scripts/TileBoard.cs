@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class TileBoard : MonoBehaviour
 {
+    public GameManager GameManager;
     public Tile TilePrefab;
     public TileState[] TileStates;
     
@@ -18,13 +19,21 @@ public class TileBoard : MonoBehaviour
         _tiles = new List<Tile>(16);
     }
 
-    private void Start()
+    public void ClearBoard()
     {
-        CreateTile();
-        CreateTile();
+        foreach (TileCell cell in _grid.Cells)
+        {
+            cell.Tile = null;
+        }
+        
+        foreach (Tile tile in _tiles)
+        {
+            Destroy(tile.gameObject);
+        }
+        _tiles.Clear();
     }
-
-    private void CreateTile()
+    
+    public void CreateTile()
     {
         Tile tile = Instantiate(TilePrefab, _grid.transform);
         tile.SetState(TileStates[0]);
@@ -118,6 +127,8 @@ public class TileBoard : MonoBehaviour
         int index = Mathf.Clamp(IndexOf(b.State) + 1, 0, TileStates.Length - 1);
         
         b.SetState(TileStates[index]);
+        
+        GameManager.IncreaseScore(b.Cell.Tile.State.Number);
     }
 
     private int IndexOf(TileState state)
@@ -145,5 +156,30 @@ public class TileBoard : MonoBehaviour
         
         if(_tiles.Count != _grid.Size)
             CreateTile();
+        if (CheckForGameOver())
+        {
+            GameManager.GameOver();
+        }
+    }
+
+    private bool CheckForGameOver()
+    {
+        if(_tiles.Count != _grid.Size)
+            return false;
+
+        foreach (Tile tile in _tiles)
+        {
+            TileCell up = _grid.GetAdjacentCell(tile.Cell, Direction.Up);
+            TileCell down = _grid.GetAdjacentCell(tile.Cell, Direction.Down);
+            TileCell left = _grid.GetAdjacentCell(tile.Cell, Direction.Left);
+            TileCell right = _grid.GetAdjacentCell(tile.Cell, Direction.Right);
+            
+            if(up != null && CanMerge(tile, up.Tile)) return false;
+            if(down != null && CanMerge(tile, down.Tile)) return false;
+            if(left != null && CanMerge(tile, left.Tile)) return false;
+            if(right != null && CanMerge(tile, right.Tile)) return false;
+        }
+        
+        return true;
     }
 }
