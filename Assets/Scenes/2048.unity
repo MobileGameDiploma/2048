@@ -1706,6 +1706,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1884891804}
+  - component: {fileID: 1884891805}
   m_Layer: 5
   m_Name: Board
   m_TagString: Untagged
@@ -1734,6 +1735,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 500, y: 500}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1884891805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1884891803}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38751480a5ef04d4aa9a8e1ec1c94068, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TilePrefab: {fileID: 699304769132539896, guid: d096990c138235c4cb9cc51b8c8d96f6, type: 3}
 --- !u!1 &1911848171
 GameObject:
   m_ObjectHideFlags: 0
