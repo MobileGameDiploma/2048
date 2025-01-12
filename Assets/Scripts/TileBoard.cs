@@ -13,14 +13,16 @@ public class TileBoard : MonoBehaviour
     private TileGrid _grid;
     private List<Tile> _tiles = new List<Tile>(16);
     private bool _waiting = false;
+    private ObjectPool _objectPool;
 
     [Inject]
-    public void Construct(TileGrid grid, GameManager gameManager, Tile tilePrefab, TileState[] states)
+    public void Construct(TileGrid grid, GameManager gameManager, Tile tilePrefab, TileState[] states, ObjectPool objectPool)
     {
         _gameManager = gameManager;
         _tilePrefab = tilePrefab;
         _grid = grid;
         _tileStates = states;
+        _objectPool = objectPool;
     }
     
 
@@ -40,7 +42,7 @@ public class TileBoard : MonoBehaviour
     
     public void CreateTile()
     {
-        Tile tile = Instantiate(_tilePrefab, _grid.transform);
+        Tile tile = _objectPool.GetPooledTile();
         tile.SetState(_tileStates[0]);
         tile.Spawn(_grid.GetRandomEmptyCell());
         _tiles.Add(tile);

@@ -10,14 +10,16 @@ public class GameManager : MonoBehaviour
     private CanvasGroup _gameOverScreen;
     [Inject(Id = "SocreText")] private TextMeshProUGUI _scoreText;
     [Inject(Id = "HighScoreText")] private TextMeshProUGUI _highScoreText;
+    private ObjectPool _objectPool;
 
     private int score;
 
     [Inject]
-    public void Construct(TileBoard board, CanvasGroup gameOverScreen)
+    public void Construct(TileBoard board, CanvasGroup gameOverScreen, ObjectPool objectPool)
     {
         _board = board;
         _gameOverScreen = gameOverScreen;
+        _objectPool = objectPool;
     }
     
     private void Start()
@@ -27,6 +29,8 @@ public class GameManager : MonoBehaviour
 
     public void NewGame()
     {
+        _objectPool.Reset();
+        
         SetScore(0);
         _highScoreText.text = LoadHighScore().ToString();
         

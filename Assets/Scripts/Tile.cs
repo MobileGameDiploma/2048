@@ -37,6 +37,7 @@ public class Tile : MonoBehaviour
         this.Cell.Tile = this;
         
         transform.position = cell.transform.position;
+        this.gameObject.SetActive(true);
     }
 
     public void MoveTo(TileCell cell)
@@ -81,6 +82,6 @@ public class Tile : MonoBehaviour
         
         transform.position = to;
 
-        if (merging) Destroy(gameObject);
+        if (merging) gameObject.SetActive(false);
     }
 }
