@@ -62,6 +62,15 @@ public partial class @MainControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Exit"",
+                    ""type"": ""Button"",
+                    ""id"": ""d81bd184-e812-42ba-905d-5b93bae53353"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -152,6 +161,17 @@ public partial class @MainControls: IInputActionCollection2, IDisposable
                     ""action"": ""MovingRight"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dc32b2d2-1a26-4265-a994-3586df368090"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Exit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -164,6 +184,7 @@ public partial class @MainControls: IInputActionCollection2, IDisposable
         m_BasicGamePlay_MovingDown = m_BasicGamePlay.FindAction("MovingDown", throwIfNotFound: true);
         m_BasicGamePlay_MovingLeft = m_BasicGamePlay.FindAction("MovingLeft", throwIfNotFound: true);
         m_BasicGamePlay_MovingRight = m_BasicGamePlay.FindAction("MovingRight", throwIfNotFound: true);
+        m_BasicGamePlay_Exit = m_BasicGamePlay.FindAction("Exit", throwIfNotFound: true);
     }
 
     ~@MainControls()
@@ -234,6 +255,7 @@ public partial class @MainControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_BasicGamePlay_MovingDown;
     private readonly InputAction m_BasicGamePlay_MovingLeft;
     private readonly InputAction m_BasicGamePlay_MovingRight;
+    private readonly InputAction m_BasicGamePlay_Exit;
     public struct BasicGamePlayActions
     {
         private @MainControls m_Wrapper;
@@ -242,6 +264,7 @@ public partial class @MainControls: IInputActionCollection2, IDisposable
         public InputAction @MovingDown => m_Wrapper.m_BasicGamePlay_MovingDown;
         public InputAction @MovingLeft => m_Wrapper.m_BasicGamePlay_MovingLeft;
         public InputAction @MovingRight => m_Wrapper.m_BasicGamePlay_MovingRight;
+        public InputAction @Exit => m_Wrapper.m_BasicGamePlay_Exit;
         public InputActionMap Get() { return m_Wrapper.m_BasicGamePlay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -263,6 +286,9 @@ public partial class @MainControls: IInputActionCollection2, IDisposable
             @MovingRight.started += instance.OnMovingRight;
             @MovingRight.performed += instance.OnMovingRight;
             @MovingRight.canceled += instance.OnMovingRight;
+            @Exit.started += instance.OnExit;
+            @Exit.performed += instance.OnExit;
+            @Exit.canceled += instance.OnExit;
         }
 
         private void UnregisterCallbacks(IBasicGamePlayActions instance)
@@ -279,6 +305,9 @@ public partial class @MainControls: IInputActionCollection2, IDisposable
             @MovingRight.started -= instance.OnMovingRight;
             @MovingRight.performed -= instance.OnMovingRight;
             @MovingRight.canceled -= instance.OnMovingRight;
+            @Exit.started -= instance.OnExit;
+            @Exit.performed -= instance.OnExit;
+            @Exit.canceled -= instance.OnExit;
         }
 
         public void RemoveCallbacks(IBasicGamePlayActions instance)
@@ -302,5 +331,6 @@ public partial class @MainControls: IInputActionCollection2, IDisposable
         void OnMovingDown(InputAction.CallbackContext context);
         void OnMovingLeft(InputAction.CallbackContext context);
         void OnMovingRight(InputAction.CallbackContext context);
+        void OnExit(InputAction.CallbackContext context);
     }
 }

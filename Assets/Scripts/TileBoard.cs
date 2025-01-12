@@ -73,7 +73,11 @@ public class TileBoard : MonoBehaviour
         MoveTiles(Direction.Right, _grid.Width - 2, -1, 0, 1);
     }
 
-    
+    private void OnExit()
+    {
+        Application.Quit();
+        Debug.Log("Exit");
+    }
 
     #endregion
 

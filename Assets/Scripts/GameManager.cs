@@ -55,7 +55,7 @@ public class GameManager : MonoBehaviour
 
     public void ResetHighScore()
     {
-        PlayerPrefs.SetInt("HighScore", 0);
+        PlayerPrefs.SetInt("HighScore", Int32.Parse(_scoreText.text));
         _highScoreText.text = _scoreText.text;
     }
 
