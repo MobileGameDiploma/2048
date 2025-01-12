@@ -5,7 +5,7 @@ using Zenject;
 public class ObjectPool
 {
     private List<Tile> _pooledObjects = new List<Tile>();
-    private int _amountToPool = 16;
+    private int _amountToPool = 20;
     
     private Tile _tilePrefab;
     private GameObject _objectPoolParent;

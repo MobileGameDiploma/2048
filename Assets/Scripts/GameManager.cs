@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using Zenject;
@@ -49,30 +50,13 @@ public class GameManager : MonoBehaviour
         _board.enabled = false;
         _gameOverScreen.interactable = true;
         _gameOverScreen.gameObject.SetActive(true);
-        StartCoroutine(Fade(_gameOverScreen, 1f, 1f));
-    }
-
-    private IEnumerator Fade(CanvasGroup canvasGroup, float to, float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        float elapsedTime = 0;
-        float duration = 0.5f;
-        float from = canvasGroup.alpha;
-        
-        while (elapsedTime < duration)
-        {
-            canvasGroup.alpha = Mathf.Lerp(from, to, elapsedTime / duration);
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-        
-        canvasGroup.alpha = to;
+        _gameOverScreen.DOFade(1f, .5f).SetDelay(1f);
     }
 
     public void ResetHighScore()
     {
         PlayerPrefs.SetInt("HighScore", 0);
-        _highScoreText.text = "0";
+        _highScoreText.text = _scoreText.text;
     }
 
     public void IncreaseScore(int points)
