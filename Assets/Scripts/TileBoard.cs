@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using Zenject;
 
@@ -14,6 +15,7 @@ public class TileBoard : MonoBehaviour
     private List<Tile> _tiles = new List<Tile>(16);
     private bool _waiting = false;
     private ObjectPool _objectPool;
+    private MainControls _mainControls;
 
     [Inject]
     public void Construct(TileGrid grid, GameManager gameManager, Tile tilePrefab, TileState[] states, ObjectPool objectPool)
@@ -23,6 +25,7 @@ public class TileBoard : MonoBehaviour
         _grid = grid;
         _tileStates = states;
         _objectPool = objectPool;
+        _mainControls = new MainControls();
     }
     
 
@@ -48,48 +51,54 @@ public class TileBoard : MonoBehaviour
         _tiles.Add(tile);
     }
 
-    private void Update()
+    #region Controls
+
+    private void OnMovingUp()
     {
-        if (!_waiting)
-        {
-            if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
-            {
-                MoveTiles(Direction.Up, 0, 1, 1, 1);
-            }
-            else if(Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
-            {
-                MoveTiles(Direction.Down, 0, 1, _grid.Height - 2, -1);
-            }
-            else if(Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
-            {
-                MoveTiles(Direction.Left, 1, 1, 0, 1);
-            }
-            else if(Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
-            {
-                MoveTiles(Direction.Right, _grid.Width - 2, -1, 0, 1);
-            }
-        }
+        MoveTiles(Direction.Up, 0, 1, 1, 1);
     }
+    
+    private void OnMovingDown()
+    {
+        MoveTiles(Direction.Down, 0, 1, _grid.Height - 2, -1);
+    }
+    
+    private void OnMovingLeft()
+    {
+        MoveTiles(Direction.Left, 1, 1, 0, 1);
+    }
+    
+    private void OnMovingRight()
+    {
+        MoveTiles(Direction.Right, _grid.Width - 2, -1, 0, 1);
+    }
+
+    
+
+    #endregion
 
     private void MoveTiles(Direction direction, int startX, int incrementX, int startY, int incrementY)
     {
-        bool changed = false;
-        for (int x = startX; x >= 0 && x < _grid.Width; x += incrementX)
+        if(!_waiting)
         {
-            for (int y = startY; y >= 0 && y < _grid.Height; y += incrementY)
+            bool changed = false;
+            for (int x = startX; x >= 0 && x < _grid.Width; x += incrementX)
             {
-                TileCell cell = _grid.GetCell(x, y);
-
-                if (cell.Occupied)
+                for (int y = startY; y >= 0 && y < _grid.Height; y += incrementY)
                 {
-                    changed |= MoveTile(cell.Tile, direction);
+                    TileCell cell = _grid.GetCell(x, y);
+
+                    if (cell.Occupied)
+                    {
+                        changed |= MoveTile(cell.Tile, direction);
+                    }
                 }
             }
-        }
 
-        if (changed)
-        {
-            StartCoroutine(WaitForChanges());
+            if (changed)
+            {
+                StartCoroutine(WaitForChanges());
+            }
         }
     }
 
