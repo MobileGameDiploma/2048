@@ -2,15 +2,23 @@ using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using Zenject;
 
 public class GameManager : MonoBehaviour
 {
-    public TileBoard Board;
-    public CanvasGroup GameOverScreen;
-    public TextMeshProUGUI ScoreText;
-    public TextMeshProUGUI HighScoreText;
+    private TileBoard _board;
+    private CanvasGroup _gameOverScreen;
+    [Inject(Id = "SocreText")] private TextMeshProUGUI _scoreText;
+    [Inject(Id = "HighScoreText")] private TextMeshProUGUI _highScoreText;
 
     private int score;
+
+    [Inject]
+    public void Construct(TileBoard board, CanvasGroup gameOverScreen)
+    {
+        _board = board;
+        _gameOverScreen = gameOverScreen;
+    }
     
     private void Start()
     {
@@ -20,24 +28,24 @@ public class GameManager : MonoBehaviour
     public void NewGame()
     {
         SetScore(0);
-        HighScoreText.text = LoadHighScore().ToString();
+        _highScoreText.text = LoadHighScore().ToString();
         
-        GameOverScreen.alpha = 0;
-        GameOverScreen.interactable = false;
-        GameOverScreen.gameObject.SetActive(false);
+        _gameOverScreen.alpha = 0;
+        _gameOverScreen.interactable = false;
+        _gameOverScreen.gameObject.SetActive(false);
         
-        Board.ClearBoard();
-        Board.CreateTile();
-        Board.CreateTile();
-        Board.enabled = true;
+        _board.ClearBoard();
+        _board.CreateTile();
+        _board.CreateTile();
+        _board.enabled = true;
     }
 
     public void GameOver()
     {
-        Board.enabled = false;
-        GameOverScreen.interactable = true;
-        GameOverScreen.gameObject.SetActive(true);
-        StartCoroutine(Fade(GameOverScreen, 1f, 1f));
+        _board.enabled = false;
+        _gameOverScreen.interactable = true;
+        _gameOverScreen.gameObject.SetActive(true);
+        StartCoroutine(Fade(_gameOverScreen, 1f, 1f));
     }
 
     private IEnumerator Fade(CanvasGroup canvasGroup, float to, float delay)
@@ -57,6 +65,12 @@ public class GameManager : MonoBehaviour
         canvasGroup.alpha = to;
     }
 
+    public void ResetHighScore()
+    {
+        PlayerPrefs.SetInt("HighScore", 0);
+        _highScoreText.text = "0";
+    }
+
     public void IncreaseScore(int points)
     {
         SetScore(score + points);
@@ -65,7 +79,7 @@ public class GameManager : MonoBehaviour
     private void SetScore(int score)
     {
         this.score = score;
-        ScoreText.text = score.ToString();
+        _scoreText.text = score.ToString();
         SaveHighScore();
     }
 
@@ -74,7 +88,7 @@ public class GameManager : MonoBehaviour
         if (score > LoadHighScore())
         {
             PlayerPrefs.SetInt("HighScore", score);
-            HighScoreText.text = score.ToString();
+            _highScoreText.text = score.ToString();
         }
     }
 
@@ -82,4 +96,5 @@ public class GameManager : MonoBehaviour
     {
         return PlayerPrefs.GetInt("HighScore", 0);
     }
+    
 }

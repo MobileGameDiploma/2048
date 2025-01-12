@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Linq.Expressions;
 using Unity.VisualScripting;
 using UnityEngine;
+using Zenject;
 using Random = System.Random;
 
 public class TileGrid : MonoBehaviour
@@ -13,10 +14,12 @@ public class TileGrid : MonoBehaviour
     public int Size => Cells.Length;
     public int Height => Rows.Length;
     public int Width => Size/Height;
-    private void Awake()
+
+    [Inject]
+    public void Construct(TileRow[] rows, TileCell[] cells)
     {
-        Rows = GetComponentsInChildren<TileRow>();
-        Cells = GetComponentsInChildren<TileCell>();
+        Rows = rows;
+        Cells = cells;
     }
     
     private void Start()

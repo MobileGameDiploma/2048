@@ -2,22 +2,27 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class TileBoard : MonoBehaviour
 {
-    public GameManager GameManager;
-    public Tile TilePrefab;
-    public TileState[] TileStates;
+    private GameManager _gameManager;
+    private Tile _tilePrefab;
+    private TileState[] _tileStates;
     
     private TileGrid _grid;
-    private List<Tile> _tiles;
+    private List<Tile> _tiles = new List<Tile>(16);
     private bool _waiting = false;
 
-    private void Awake()
+    [Inject]
+    public void Construct(TileGrid grid, GameManager gameManager, Tile tilePrefab, TileState[] states)
     {
-        _grid = GetComponentInChildren<TileGrid>();
-        _tiles = new List<Tile>(16);
+        _gameManager = gameManager;
+        _tilePrefab = tilePrefab;
+        _grid = grid;
+        _tileStates = states;
     }
+    
 
     public void ClearBoard()
     {
@@ -35,8 +40,8 @@ public class TileBoard : MonoBehaviour
     
     public void CreateTile()
     {
-        Tile tile = Instantiate(TilePrefab, _grid.transform);
-        tile.SetState(TileStates[0]);
+        Tile tile = Instantiate(_tilePrefab, _grid.transform);
+        tile.SetState(_tileStates[0]);
         tile.Spawn(_grid.GetRandomEmptyCell());
         _tiles.Add(tile);
     }
@@ -124,18 +129,18 @@ public class TileBoard : MonoBehaviour
     {
         _tiles.Remove(a);
         a.Merge(b.Cell);
-        int index = Mathf.Clamp(IndexOf(b.State) + 1, 0, TileStates.Length - 1);
+        int index = Mathf.Clamp(IndexOf(b.State) + 1, 0, _tileStates.Length - 1);
         
-        b.SetState(TileStates[index]);
+        b.SetState(_tileStates[index]);
         
-        GameManager.IncreaseScore(b.Cell.Tile.State.Number);
+        _gameManager.IncreaseScore(b.Cell.Tile.State.Number);
     }
 
     private int IndexOf(TileState state)
     {
-        for (int i = 0; i < TileStates.Length; i++)
+        for (int i = 0; i < _tileStates.Length; i++)
         {
-            if(state == TileStates[i]) return i;
+            if(state == _tileStates[i]) return i;
         }
         
         return -1;
@@ -158,7 +163,7 @@ public class TileBoard : MonoBehaviour
             CreateTile();
         if (CheckForGameOver())
         {
-            GameManager.GameOver();
+            _gameManager.GameOver();
         }
     }
 

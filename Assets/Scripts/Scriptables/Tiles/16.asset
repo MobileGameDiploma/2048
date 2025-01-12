@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: 16
   m_EditorClassIdentifier: 
   Number: 16
-  BackgroundColor: {r: 0.9647059, g: 0.5882353, b: 0.39215687, a: 1}
-  TextColor: {r: 0.9764706, g: 0.9647059, b: 0.9490196, a: 1}
+  BackgroundColor: {r: 0.4, g: 0, b: 0.6, a: 1}
+  TextColor: {r: 0.7647059, g: 0.75686276, b: 0.7529412, a: 1}
