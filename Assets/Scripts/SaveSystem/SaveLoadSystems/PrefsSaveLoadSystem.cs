@@ -31,15 +31,15 @@ namespace SaveSystem
                 Type type = prop.PropertyType;
                 string currentName = NameLayout + prop.Name;
                 
-                if (type.ToString() == "int")
+                if (type.ToString() == "System.Int32")
                 {
                     PlayerPrefs.SetInt(currentName, (int)prop.GetValue(Object));
                 }
-                else if (type.ToString() == "float")
+                else if (type.ToString() == "System.String")
                 {
-                    PlayerPrefs.SetString(currentName, Convert.ToString(prop.GetValue(Object)));
+                    PlayerPrefs.SetString(currentName, Convert.ToString(Convert.ToString(prop.GetValue(Object))));
                 }
-                else if (type.ToString() == "float")
+                else if (type.ToString() == "System.Single")
                 {
                     PlayerPrefs.SetFloat(currentName, (float)prop.GetValue(Object));
                 }
@@ -57,17 +57,17 @@ namespace SaveSystem
                 Type propType = prop.PropertyType;
                 string currentName = name + prop.Name;
                 
-                if (propType.ToString() == "int")
+                if (propType.ToString() == "System.Int32")
                 {
-                    prop.SetValue(PlayerPrefs.GetInt(currentName), 0);
+                    prop.SetValue(obj, PlayerPrefs.GetInt(currentName));
                 }
-                else if (propType.ToString() == "float")
+                else if (propType.ToString() == "System.Single")
                 {
-                    prop.SetValue(PlayerPrefs.GetFloat(currentName), 0);
+                    prop.SetValue(obj, PlayerPrefs.GetFloat(currentName));
                 }
-                else if (propType.ToString() == "float")
+                else if (propType.ToString() == "System.String")
                 {
-                    prop.SetValue(PlayerPrefs.GetString(currentName), 0);
+                    prop.SetValue(null, PlayerPrefs.GetString(currentName));
                 }
                 else
                 {

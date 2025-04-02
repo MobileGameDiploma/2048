@@ -8,7 +8,7 @@ public class SystemSetter : MonoBehaviour
 {
     public SaveType SaveType;
     private List<ISavable> _savables = new List<ISavable>();
-    private void Start()
+    private void Awake()
     {
         if (SaveType == SaveType.Prefs)
         {
