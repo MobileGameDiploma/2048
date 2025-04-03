@@ -4,9 +4,9 @@ using UnityEngine;
 
 namespace SaveSystem
 {
-    public class JsonSaveLoadSystem : ASaveLoadSystem
+    public class JsonSaveLoadSystem : ISaveLoadSystem
     {
-        public override void Save(object saveData, string name)
+        public void Save(object saveData, string name)
         {
             string NameLayout = name + saveData.GetType();
             string json = JsonUtility.ToJson(saveData);
@@ -14,7 +14,7 @@ namespace SaveSystem
             File.WriteAllText(Application.persistentDataPath + "/" + NameLayout + ".json", json);
         }
 
-        public override object Load(string name, Type type)
+        public object Load(string name, Type type)
         {
             object result = Activator.CreateInstance(type);
             string NameLayout = name + type;

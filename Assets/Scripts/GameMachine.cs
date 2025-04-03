@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using Zenject;
 
-public class GameManager : MonoBehaviour
+public class GameMachine : MonoBehaviour
 {
     private TileBoard _board;
     private CanvasGroup _gameOverScreen;

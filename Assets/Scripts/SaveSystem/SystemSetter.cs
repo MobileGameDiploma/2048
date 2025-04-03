@@ -29,7 +29,7 @@ public class SystemSetter : MonoBehaviour
         _savables.Add(savable);
     }
 
-    private void SetSavablesUp(ASaveLoadSystem saveLoadSystem)
+    private void SetSavablesUp(ISaveLoadSystem saveLoadSystem)
     {
         foreach (ISavable savable in _savables)
         {

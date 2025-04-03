@@ -1,15 +1,16 @@
 
 using UnityEngine;
+using UnityEngine.Serialization;
 using Zenject;
 
 public class GameLogicMonoInstaller : MonoInstaller
 {
-    public GameManager GameManager;
+    [FormerlySerializedAs("GameManager")] public GameMachine gameMachine;
     public TileState[] States;
 
     public override void InstallBindings()
     {
-        Container.Bind<GameManager>().FromInstance(GameManager).AsSingle();
+        Container.Bind<GameMachine>().FromInstance(gameMachine).AsSingle();
         Container.Bind<TileState[]>().FromInstance(States).AsSingle();
     }
 }

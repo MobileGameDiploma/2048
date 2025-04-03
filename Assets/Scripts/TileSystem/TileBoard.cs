@@ -7,7 +7,7 @@ using Zenject;
 
 public class TileBoard : MonoBehaviour
 {
-    private GameManager _gameManager;
+    private GameMachine _gameMachine;
     private Tile _tilePrefab;
     private TileState[] _tileStates;
     
@@ -18,9 +18,9 @@ public class TileBoard : MonoBehaviour
     private MainControls _mainControls;
 
     [Inject]
-    public void Construct(TileGrid grid, GameManager gameManager, Tile tilePrefab, TileState[] states, ObjectPool objectPool)
+    public void Construct(TileGrid grid, GameMachine gameMachine, Tile tilePrefab, TileState[] states, ObjectPool objectPool)
     {
-        _gameManager = gameManager;
+        _gameMachine = gameMachine;
         _tilePrefab = tilePrefab;
         _grid = grid;
         _tileStates = states;
@@ -148,7 +148,7 @@ public class TileBoard : MonoBehaviour
         
         b.SetState(_tileStates[index]);
         
-        _gameManager.IncreaseScore(b.Cell.Tile.State.Number);
+        _gameMachine.IncreaseScore(b.Cell.Tile.State.Number);
     }
 
     private int IndexOf(TileState state)
@@ -178,7 +178,7 @@ public class TileBoard : MonoBehaviour
             CreateTile();
         if (CheckForGameOver())
         {
-            _gameManager.GameOver();
+            _gameMachine.GameOver();
         }
     }
 

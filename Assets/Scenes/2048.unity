@@ -914,7 +914,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98f6a966ed93618409af72b7c4339cde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GameManager: {fileID: 983158945}
+  gameMachine: {fileID: 983158945}
   States:
   - {fileID: 11400000, guid: 6069728a7db9e0e4ea21ff39052c324c, type: 2}
   - {fileID: 11400000, guid: 5182a9874632c2a49bb03e799c192dc8, type: 2}
@@ -2040,7 +2040,7 @@ GameObject:
   - component: {fileID: 983158946}
   - component: {fileID: 983158945}
   m_Layer: 0
-  m_Name: GameManager
+  m_Name: GameMachine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
